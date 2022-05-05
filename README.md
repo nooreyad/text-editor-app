@@ -1,1 +1,1 @@
-# tex-editor-app
+# text-editor-app
