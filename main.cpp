@@ -86,7 +86,12 @@ void countTheNumberOfWords () {
 }
 
 void countTheNumberOfCharacters() {
-
+    ifstream file(fileName1);
+    char ch; int characters = 0;
+    while (file >> noskipws >> ch)
+        characters++;
+    cout << "Characters = " << characters << endl;
+    file.close();
 }
 
 void countTheNumberOfLines() {
