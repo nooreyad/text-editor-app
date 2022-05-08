@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <cctype>
 
 using namespace std;
 
@@ -12,15 +13,26 @@ int nextChoice() {
     cout << "Please enter the name of the file you want to deal with: ";
     fstream file;
     cin >> fileName1;
-    fileName1 = fileName1 + ".txt";
+    fileName1 += ".txt";
     file.open(fileName1, ios::in);
+    while (file.fail()){
+        cout << "Failed to open; please check if file exists. \n";
+        file.close();
+        cout << "File name: ";
+        cin >> fileName1;
+        fileName1 += ".txt";
+        file.open(fileName1, ios::in);
+    }
+    if (!file.fail()) {
+        cout << "File is opened successfully.\n";
+    }
     return 0;
 }
 
 void openingSecondFile() {
     fstream file;
     cin >> fileName2;
-    fileName2 = fileName2 + ".txt";
+    fileName2 += ".txt";
     file.open(fileName2, ios::in);
 }
 
@@ -31,10 +43,15 @@ void saveFile() {
 void checkFileExistence(){
     ifstream file;
     file.open (fileName2);
-    if (file.fail()){
-        cout << "Failed to open; check if file exists. \n";
+    while (file.fail()){
+        cout << "Failed to open; please check if file exists. \n";
+        file.close();
+        cout << "File name: ";
+        cin >> fileName2;
+        fileName2 += ".txt";
+        file.open(fileName1, ios::in);
     }
-    else {
+    if (!file.fail()) {
         cout << "File is opened successfully.\n";
     }
 }
@@ -81,7 +98,7 @@ void countTheNumberOfWords () {
             word++;
         }
     }
-    cout << "\nWords = " << word << "\n";
+    cout << "Number of words = " << word << endl;
     file.close();
 }
 
@@ -90,16 +107,50 @@ void countTheNumberOfCharacters() {
     char ch; int characters = 0;
     while (file >> noskipws >> ch)
         characters++;
-    cout << "Characters = " << characters << endl;
+    cout << "Number of characters = " << characters << endl;
     file.close();
 }
 
 void countTheNumberOfLines() {
-
+    ifstream file(fileName1);
+    int linesNumber = 0;
+    string line;
+    while (getline(file, line)){
+        ++linesNumber;
+    }
+    cout << "Number of lines =" << linesNumber << endl;
+    file.close();
 }
 
 void searchForAWord() {
-
+//    ifstream file(fileName1);
+//    file.open(fileName1);
+//    string line;
+//    string word;
+//    cout << "Enter the word you want to look for: ";
+//    cin >> word;
+//    if (file.is_open()){
+//        if (getline(file, line)) {
+//            for (char & i : word){
+//                i = tolower(i);
+//            }
+//            if (line.find(word) != string::npos) {
+//                cout << word << " was found in file :)" << endl;
+//            } else {
+//                cout << word << " was not found in the file :(" << endl;
+//            }
+//        }
+//        if (getline(file, line)) {
+//            for (char & i : word){
+//                i = toupper(i);
+//            }
+//            if (line.find(word) != string::npos) {
+//                cout << word << " was found in file :)" << endl;
+//            } else {
+//                cout << word << " was not found in the file :(" << endl;
+//            }
+//        }
+//    }
 }
 
 void countTheNumberOfTimesAWordExists() {
@@ -119,6 +170,7 @@ void turnFileContentFirstCaps() {
 }
 
 int menu(){
+    fstream file;
     cout << "Choose one of the options below:" << endl;
     cout << "1. Add new text to the end of the file \n"
             "2. Display the content of the file\n"
