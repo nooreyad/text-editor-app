@@ -2,6 +2,7 @@
 #include <fstream>
 #include <string>
 #include <cctype>
+#include <algorithm>
 
 using namespace std;
 
@@ -123,38 +124,47 @@ void countTheNumberOfLines() {
 }
 
 void searchForAWord() {
-//    ifstream file(fileName1);
-//    file.open(fileName1);
-//    string line;
-//    string word;
-//    cout << "Enter the word you want to look for: ";
-//    cin >> word;
-//    if (file.is_open()){
-//        if (getline(file, line)) {
-//            for (char & i : word){
-//                i = tolower(i);
-//            }
-//            if (line.find(word) != string::npos) {
-//                cout << word << " was found in file :)" << endl;
-//            } else {
-//                cout << word << " was not found in the file :(" << endl;
-//            }
-//        }
-//        if (getline(file, line)) {
-//            for (char & i : word){
-//                i = toupper(i);
-//            }
-//            if (line.find(word) != string::npos) {
-//                cout << word << " was found in file :)" << endl;
-//            } else {
-//                cout << word << " was not found in the file :(" << endl;
-//            }
-//        }
-//    }
+    ifstream file(fileName1);
+    file.open(fileName1.c_str());
+    string line;
+    string word;
+    string text;
+    cout << "Enter the word you want to look for: ";
+    cin >> word;
+    transform(word.begin(), word.end(), word.begin(), ::tolower);
+    while (file >> text){
+        transform(text.begin(), text.end(), text.begin(), ::tolower);
+        if (text == word){
+            cout << word << " has been found :)" << endl;
+        }
+    }
+    if (!(file >> text)){
+        cout << word << " has not been found :(" << endl;
+    }
+    file.close();
 }
 
 void countTheNumberOfTimesAWordExists() {
-
+    ifstream  file(fileName1);
+    file.open(fileName1);
+    int count = 0;
+    string word;
+    string text;
+    cout << "Please enter the word: ";
+    cin >> word;
+    transform(word.begin(), word.end(), word.begin(), ::tolower);
+    while (file >> text){
+        if (text == word){
+            ++count;
+        }
+    }
+    if (count == 0){
+        cout << "Sorry, this word does not exist in this text file :(" << endl;
+    }
+    else{
+        cout << "The number of time " << word << " appeared in the text file is " << count << endl;
+    }
+    file.close();
 }
 
 void turnContentUpperCae() {
