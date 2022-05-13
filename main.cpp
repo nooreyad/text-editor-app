@@ -6,6 +6,7 @@
 
 using namespace std;
 
+// Declaring variables
 string fileName1, fileName2;
 int choice;
 
