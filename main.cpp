@@ -58,24 +58,75 @@ void checkFileExistence(){
     }
 }
 
+// Function to append text at the end of the file
 void addingContent() {
-
+    fstream file;
+    string text;
+    cin.ignore();
+    cout<<"Write the text you want to append in that file: "<<endl;
+    getline(cin,text);
+    file.open(fileName1, ios::app);
+    file<<text<<endl;
+    file.close();
 }
 
+// Function to display the content of the file
 void displayContent() {
-
+    fstream file;
+    string line;
+    file.open(fileName1,ios::in);
+    while(getline(file,line)){
+        cout<<line<<endl;
+    }
+    file.close();
 }
 
+// Function to clear the content in the file
 void emptyTheFile() {
-
+    fstream file;
+    file.open(fileName1,ios:: trunc);
+    file.close();
 }
 
+// Function to encrypt the content of the file
 void encryptTheFileContent() {
+fstream file, file2 ;
+string line;
+int temp;
+file.open(fileName1,ios :: in);
+file2.open(fileName1);
+while(!file.eof()){
+    getline(file,line);
+    for(char letter : line){
+    temp = int(letter) + 1;
+    letter = char(temp);
+    file2 <<letter;
+    }
+    file2<<endl;
+}
+file.close();
+file2.close();
 
 }
 
+// Function to decrypt the content of the file
 void decryptTheFileContent() {
-
+    fstream file,file2;
+    string line;
+    int temp;
+    file2.open(fileName1,ios::in);
+    file.open(fileName1);
+    while(!file2.eof()){
+        getline(file2,line);
+        for(char letter : line){
+            temp = int(letter)-1;
+                    letter = char(temp);
+                    file << letter;
+        }
+        file<<endl;
+    }
+    file.close();
+    file2.close();
 }
 
 void mergingAnotherFile() {
