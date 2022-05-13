@@ -1,6 +1,7 @@
-this is
-a test
-file.
-its number
+This
 is
-one
+file
+number
+one.
+testing
+functions

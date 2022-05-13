@@ -84,25 +84,25 @@ void displayContent() {
 // Function to clear the content in the file
 void emptyTheFile() {
     fstream file;
-    file.open(fileName1,ios:: trunc);
+    file.open(fileName1,ios:: out | ios:: trunc);
     file.close();
 }
 
 // Function to encrypt the content of the file
 void encryptTheFileContent() {
-fstream file, file2 ;
-string line;
-int temp;
-file.open(fileName1,ios :: in);
-file2.open(fileName1);
-while(!file.eof()){
-    getline(file,line);
-    for(char letter : line){
-    temp = int(letter) + 1;
-    letter = char(temp);
-    file2 <<letter;
-    }
-    file2<<endl;
+    fstream file, file2 ;
+    string line;
+    int temp;
+    file.open(fileName1,ios :: in);
+    file2.open(fileName1);
+    while(!file.eof()){
+        getline(file,line);
+        for(char letter : line){
+        temp = int(letter) + 1;
+        letter = char(temp);
+        file2 <<letter;
+        }
+        file2<<endl;
 }
 file.close();
 file2.close();
