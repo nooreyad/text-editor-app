@@ -74,7 +74,7 @@ void addingContent() {
 void displayContent() {
     fstream file;
     string line;
-    file.open(fileName1,ios::in);
+    file.open(fileName1,ios::out | ios::trunc);
     while(getline(file,line)){
         cout<<line<<endl;
     }
@@ -187,6 +187,7 @@ void searchForAWord() {
     string word;
     string text;
     cout << "Enter the word you want to look for: ";
+    cin.ignore();
     cin >> word;
     transform(word.begin(), word.end(), word.begin(), ::tolower);
     while (file >> text){
