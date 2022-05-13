@@ -62,9 +62,15 @@ void checkFileExistence(){
 void addingContent() {
     fstream file;
     string text;
+    char ch, ch2;
     cin.ignore();
     cout<<"Write the text you want to append in that file: "<<endl;
-    getline(cin,text);
+    while(((ch = getchar()) != '\n') || (ch2 != '\n')){
+        text += ch;
+        ch2 = ch;
+    }
+    text.resize(text.length()-1);
+    cin.ignore(256, '\n');
     file.open(fileName1, ios::app);
     file<<text<<endl;
     file.close();
@@ -74,7 +80,7 @@ void addingContent() {
 void displayContent() {
     fstream file;
     string line;
-    file.open(fileName1,ios::out | ios::trunc);
+    file.open(fileName1,ios::in);
     while(getline(file,line)){
         cout<<line<<endl;
     }
@@ -144,14 +150,15 @@ void mergingAnotherFile() {
 // function to count the number of words in a text file
 void countTheNumberOfWords () {
     ifstream file(fileName1);
-    int word = 1;
-    char ch;
+    int word = 0;
+    char ch, ch2;
     file.seekg(0, ios::beg);
     while (file) {
         file.get(ch);
-        if (ch == ' ' || ch == '\n') {
+        if ((ch == ' ' || ch == '\n') && isalpha(ch2)) {
             word++;
         }
+        ch2 = ch;
     }
     cout << "Number of words = " << word << endl;
     file.close();
@@ -182,21 +189,23 @@ void countTheNumberOfLines() {
 // function to search for a word in a text file (case-insensitive)
 void searchForAWord() {
     ifstream file(fileName1);
-    file.open(fileName1.c_str());
-    string line;
     string word;
     string text;
     cout << "Enter the word you want to look for: ";
     cin.ignore();
     cin >> word;
+    bool isFound = false;
     transform(word.begin(), word.end(), word.begin(), ::tolower);
-    while (file >> text){
+    while (!file.eof()){
+        file >> text;
         transform(text.begin(), text.end(), text.begin(), ::tolower);
         if (text == word){
-            cout << word << " has been found :)" << endl;
+            cout << '\'' << word << '\'' <<  " has been found :)" << endl;
+            isFound = true;
+            break;
         }
     }
-    if (!(file >> text)){
+    if (!isFound){
         cout << word << " has not been found :(" << endl;
     }
     file.close();
@@ -204,22 +213,25 @@ void searchForAWord() {
 
 // function to count the number of times a word exists in a text file
 void numberOfTimesAWordExists() {
-    ifstream  file(fileName1);
-    file.open(fileName1);
-    int count = 0;
+    ifstream file(fileName1);
     string word;
     string text;
-    cout << "Please enter the word: ";
+    int count = 0;
+    cout << "Enter the word you want to look for: ";
     cin.ignore();
     cin >> word;
+    bool isFound = false;
     transform(word.begin(), word.end(), word.begin(), ::tolower);
-    while (file >> text){
+    while (!file.eof()){
+        file >> text;
+        transform(text.begin(), text.end(), text.begin(), ::tolower);
         if (text == word){
-            ++count;
+            isFound = true;
+            count++;
         }
     }
-    if (count == 0){
-        cout << "Sorry, this word does not exist in this text file :(" << endl;
+    if (!isFound){
+        cout << word << " has not been found :(" << endl;
     }
     else{
         cout << "The number of time " << word << " appeared in the text file is " << count << endl;
@@ -374,12 +386,13 @@ int main() {
     if (file.fail()){
         cout << "file doesn't exists" << endl;
         file.close();
-        cout << "This is a new file. I created it for ypu :)" << endl;
-        ofstream {"New File.txt"};
-        file.open("New File.txt", ios :: in);
+        cout << "This is a new file. I created it for you :)" << endl;
+        ofstream {fileName1};
+        file.open(fileName1, ios :: in);
         menu();
     }
     else {
+        cout << "This file does already exist.\n";
         if (file.is_open()){
             menu();
         }
