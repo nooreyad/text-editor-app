@@ -129,6 +129,7 @@ void decryptTheFileContent() {
     file2.close();
 }
 
+// function to merge 2 text files and save them to a third file called Merged_File
 void mergingAnotherFile() {
     cout << "Please enter the second file name to be merged with the first one: ";
     openingSecondFile();
@@ -140,6 +141,7 @@ void mergingAnotherFile() {
     combined_file.close();
 }
 
+// function to count the number of words in a text file
 void countTheNumberOfWords () {
     ifstream file(fileName1);
     int word = 1;
@@ -155,6 +157,7 @@ void countTheNumberOfWords () {
     file.close();
 }
 
+// function to count the number of characters in a text file (a character is anything in the ascii table)
 void countTheNumberOfCharacters() {
     ifstream file(fileName1);
     char ch; int characters = 0;
@@ -164,6 +167,7 @@ void countTheNumberOfCharacters() {
     file.close();
 }
 
+// function to count the number of line in a text file
 void countTheNumberOfLines() {
     ifstream file(fileName1);
     int linesNumber = 0;
@@ -175,6 +179,7 @@ void countTheNumberOfLines() {
     file.close();
 }
 
+// function to search for a word in a text file (case-insensitive)
 void searchForAWord() {
     ifstream file(fileName1);
     file.open(fileName1.c_str());
@@ -196,13 +201,15 @@ void searchForAWord() {
     file.close();
 }
 
-void countTheNumberOfTimesAWordExists() {
+// function to count the number of times a word exists in a text file
+void numberOfTimesAWordExists() {
     ifstream  file(fileName1);
     file.open(fileName1);
     int count = 0;
     string word;
     string text;
     cout << "Please enter the word: ";
+    cin.ignore();
     cin >> word;
     transform(word.begin(), word.end(), word.begin(), ::tolower);
     while (file >> text){
@@ -315,7 +322,7 @@ int menu(){
                 cin >> choice;
                 break;
             case 11:
-                countTheNumberOfTimesAWordExists();
+                numberOfTimesAWordExists();
                 nextChoice();
                 cout << "Choice: ";
                 cin >> choice;
