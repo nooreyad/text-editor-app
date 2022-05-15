@@ -3,7 +3,7 @@
 #include <string>
 #include <cctype>
 #include <algorithm>
-
+#include <stdio.h>
 using namespace std;
 
 // Declaring variables
@@ -36,10 +36,6 @@ void openingSecondFile() {
     cin >> fileName2;
     fileName2 += ".txt";
     file.open(fileName2, ios::in);
-}
-
-void saveFile() {
-
 }
 
 void checkFileExistence(){
@@ -96,43 +92,43 @@ void emptyTheFile() {
 
 // Function to encrypt the content of the file
 void encryptTheFileContent() {
-    fstream file, file2 ;
+    fstream file ;
+    ofstream  savedFile("new file");
     string line;
     int temp;
     file.open(fileName1,ios :: in);
-    file2.open(fileName1);
     while(!file.eof()){
         getline(file,line);
         for(char letter : line){
-        temp = int(letter) + 1;
-        letter = char(temp);
-        file2 <<letter;
+            temp = int(letter) + 1;
+            letter = char(temp);
+            savedFile <<letter;
         }
-        file2<<endl;
-}
-file.close();
-file2.close();
+        savedFile<<endl;
+    }
+    file.close();
+    savedFile.close();
 
 }
 
 // Function to decrypt the content of the file
 void decryptTheFileContent() {
-    fstream file,file2;
+    fstream file;
+    ofstream  savedFile("new file");
     string line;
     int temp;
-    file2.open(fileName1,ios::in);
-    file.open(fileName1);
-    while(!file2.eof()){
-        getline(file2,line);
+    file.open(fileName1,ios::in);
+    while(!file.eof()){
+        getline(file,line);
         for(char letter : line){
             temp = int(letter)-1;
-                    letter = char(temp);
-                    file << letter;
+            letter = char(temp);
+            savedFile << letter;
         }
-        file<<endl;
+        savedFile<<endl;
     }
     file.close();
-    file2.close();
+    savedFile.close();
 }
 
 // function to merge 2 text files and save them to a third file called Merged_File
@@ -143,25 +139,26 @@ void mergingAnotherFile() {
     ifstream file1(fileName1);
     ifstream file2(fileName2);
     ofstream combined_file("Merged_File.txt");
-    combined_file << file1.rdbuf() << file2.rdbuf();
+    combined_file << file1.rdbuf() << endl << file2.rdbuf();
     combined_file.close();
 }
 
+
 // function to count the number of words in a text file
 void countTheNumberOfWords () {
-    ifstream file(fileName1);
-    int word = 0;
-    char ch, ch2;
-    file.seekg(0, ios::beg);
-    while (file) {
-        file.get(ch);
-        if ((ch == ' ' || ch == '\n') && isalpha(ch2)) {
-            word++;
+        ifstream file(fileName1);
+        int word = 0;
+        char ch, ch2;
+        file.seekg(0, ios::beg);
+        while (file) {
+            file.get(ch);
+            if ((ch == ' ' || ch == '\n') && isalpha(ch2)) {
+                word++;
+            }
+            ch2 = ch;
         }
-        ch2 = ch;
-    }
-    cout << "Number of words = " << word << endl;
-    file.close();
+        cout << "Number of words = " << word << endl;
+        file.close();
 }
 
 // function to count the number of characters in a text file (a character is anything in the ascii table)
@@ -240,14 +237,80 @@ void numberOfTimesAWordExists() {
 }
 
 void turnContentUpperCae() {
-
+    ifstream file(fileName1);
+    ofstream  savedFile("new file");
+    char ch;
+    while (file.get(ch)){
+        ch = toupper(ch);
+        savedFile << ch;
+    }
+    file.close();
+    savedFile.close();
 }
 
 void turnContentLowerCase() {
-
+    ifstream file(fileName1);
+    ofstream  savedFile("new file");
+    char ch;
+    while (file.get(ch)){
+        ch = tolower(ch);
+        savedFile << ch;
+    }
+    file.close();
+    savedFile.close();
 }
 
 void turnFileContentFirstCaps() {
+    fstream file(fileName1);
+    ofstream  savedFile("new file");
+    char ch;
+    bool new_word = true;
+    while (file.get(ch)) {
+        if (ch == '.' || ch == ' ' || ch == '\n') {
+            new_word = true;
+        }
+        if (isalpha(ch)) {
+            if (new_word) {
+                ch = toupper(ch);
+                new_word = false;
+            }
+            else {
+                ch = tolower(ch);
+            }
+        }
+        savedFile.put(ch);
+    }
+    file.close();
+    savedFile.close();
+}
+
+void saveFile() {
+    int input;
+    cout << "Please choose where do want this changes to be saved\n"
+        "1- in this file\n"
+        "2- in a new file\n"
+        "Choice: ";
+    cin >> input;
+    if(input == 1){
+        emptyTheFile();
+        char ch;
+        ofstream file(fileName1);
+        ifstream  savedFile("new file");
+        while(savedFile.get(ch)){
+            file << ch ;
+        }
+        savedFile.close();
+        file.close();
+        remove( "new file" );
+        cout << "Changes have been saved successfully in this file\n";
+    }
+    else if (input == 2){
+        cout << "Changes have been saved successfully in a new file\n";
+    }
+    else{
+        cout <<"Please enter a valid choice\n";
+        saveFile();
+    }
 
 }
 
