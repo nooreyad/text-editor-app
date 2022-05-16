@@ -4,11 +4,12 @@
 #include <cctype>
 #include <algorithm>
 #include <stdio.h>
+
 using namespace std;
 
 // Declaring variables
 string fileName1, fileName2;
-int choice;
+char choice;
 
 int nextChoice() {
     cout << "What do you want to do next?" << endl;
@@ -57,6 +58,7 @@ void checkFileExistence(){
 // Function to append text at the end of the file
 void addingContent() {
     fstream file;
+    ofstream savedFile("new file");
     string text;
     char ch, ch2;
     cin.ignore();
@@ -70,30 +72,35 @@ void addingContent() {
     file.open(fileName1, ios::app);
     file<<text<<endl;
     file.close();
+    savedFile.close();
 }
 
 // Function to display the content of the file
 void displayContent() {
     fstream file;
+    ofstream savedFile("new file");
     string line;
     file.open(fileName1,ios::in);
     while(getline(file,line)){
         cout<<line<<endl;
     }
     file.close();
+    savedFile.close();
 }
 
 // Function to clear the content in the file
 void emptyTheFile() {
     fstream file;
+    ofstream savedFile("new file");
     file.open(fileName1,ios:: out | ios:: trunc);
     file.close();
+    savedFile.close();
 }
 
 // Function to encrypt the content of the file
 void encryptTheFileContent() {
     fstream file ;
-    ofstream  savedFile("new file");
+    ofstream savedFile("new file");
     string line;
     int temp;
     file.open(fileName1,ios :: in);
@@ -108,13 +115,12 @@ void encryptTheFileContent() {
     }
     file.close();
     savedFile.close();
-
 }
 
 // Function to decrypt the content of the file
 void decryptTheFileContent() {
     fstream file;
-    ofstream  savedFile("new file");
+    ofstream savedFile("new file");
     string line;
     int temp;
     file.open(fileName1,ios::in);
@@ -146,19 +152,19 @@ void mergingAnotherFile() {
 
 // function to count the number of words in a text file
 void countTheNumberOfWords () {
-        ifstream file(fileName1);
-        int word = 0;
-        char ch, ch2;
-        file.seekg(0, ios::beg);
-        while (file) {
-            file.get(ch);
-            if ((ch == ' ' || ch == '\n') && isalpha(ch2)) {
-                word++;
-            }
-            ch2 = ch;
+    ifstream file(fileName1);
+    int word = 0;
+    char ch, ch2;
+    file.seekg(0, ios::beg);
+    while (file) {
+        file.get(ch);
+        if ((ch == ' ' || ch == '\n') && isalpha(ch2)) {
+            word++;
         }
-        cout << "Number of words = " << word << endl;
-        file.close();
+        ch2 = ch;
+    }
+    cout << "Number of words = " << word << endl;
+    file.close();
 }
 
 // function to count the number of characters in a text file (a character is anything in the ascii table)
@@ -238,7 +244,7 @@ void numberOfTimesAWordExists() {
 
 void turnContentUpperCae() {
     ifstream file(fileName1);
-    ofstream  savedFile("new file");
+    ofstream savedFile("new file");
     char ch;
     while (file.get(ch)){
         ch = toupper(ch);
@@ -250,7 +256,7 @@ void turnContentUpperCae() {
 
 void turnContentLowerCase() {
     ifstream file(fileName1);
-    ofstream  savedFile("new file");
+    ofstream savedFile("new file");
     char ch;
     while (file.get(ch)){
         ch = tolower(ch);
@@ -262,7 +268,7 @@ void turnContentLowerCase() {
 
 void turnFileContentFirstCaps() {
     fstream file(fileName1);
-    ofstream  savedFile("new file");
+    ofstream savedFile("new file");
     char ch;
     bool new_word = true;
     while (file.get(ch)) {
@@ -295,7 +301,7 @@ void saveFile() {
         emptyTheFile();
         char ch;
         ofstream file(fileName1);
-        ifstream  savedFile("new file");
+        ifstream savedFile("new file");
         while(savedFile.get(ch)){
             file << ch ;
         }
@@ -326,103 +332,103 @@ int menu(){
             "7. Count the number of words in the file.\n"
             "8. Count the number of characters in the file\n"
             "9. Count the number of lines in the file\n"
-            "10. Search for a word in the file\n"
-            "11. Count the number of times a word exists in the file\n"
-            "12. Turn the file content to upper case.\n"
-            "13. Turn the file content to lower case.\n"
-            "14. Turn file content to 1st caps (1st char of each word is capital) \n"
-            "15. Save\n"
-            "16. Exit\n"
+            "a. Search for a word in the file\n"
+            "b. Count the number of times a word exists in the file\n"
+            "c. Turn the file content to upper case.\n"
+            "d. Turn the file content to lower case.\n"
+            "e. Turn file content to 1st caps (1st char of each word is capital) \n"
+            "f. Exit\n"
             "Choice: ";
     cin >> choice;
-    while (choice != 16){
+    while (choice != 'f'){
         switch (choice) {
-            case 1:
+            case '1':
                 addingContent();
+                saveFile();
                 nextChoice();
                 cout << "Choice: ";
                 cin >> choice;
                 break;
-            case 2:
+            case '2':
                 displayContent();
+                saveFile();
                 nextChoice();
                 cout << "Choice: ";
                 cin >> choice;
                 break;
-            case 3:
+            case '3':
                 emptyTheFile();
+                saveFile();
                 nextChoice();
                 cout << "Choice: ";
                 cin >> choice;
                 break;
-            case 4:
+            case '4':
                 encryptTheFileContent();
+                saveFile();
                 nextChoice();
                 cout << "Choice: ";
                 cin >> choice;
                 break;
-            case 5:
+            case '5':
                 decryptTheFileContent();
                 nextChoice();
+                saveFile();
                 cout << "Choice: ";
                 cin >> choice;
                 break;
-            case 6:
+            case '6':
                 mergingAnotherFile();
                 nextChoice();
                 cout << "Choice: ";
                 cin >> choice;
                 break;
-            case 7:
+            case '7':
                 countTheNumberOfWords();
                 nextChoice();
                 cout << "Choice: ";
                 cin >> choice;
                 break;
-            case 8:
+            case '8':
                 countTheNumberOfCharacters();
                 nextChoice();
                 cout << "Choice: ";
                 cin >> choice;
                 break;
-            case 9:
+            case '9':
                 countTheNumberOfLines();
                 nextChoice();
                 cout << "Choice: ";
                 cin >> choice;
                 break;
-            case 10:
+            case 'a':
                 searchForAWord();
                 nextChoice();
                 cout << "Choice: ";
                 cin >> choice;
                 break;
-            case 11:
+            case 'b':
                 numberOfTimesAWordExists();
                 nextChoice();
                 cout << "Choice: ";
                 cin >> choice;
                 break;
-            case 12:
+            case 'c':
                 turnContentUpperCae();
-                nextChoice();
-                cout << "Choice: ";
-                cin >> choice;
-                break;
-            case 13:
-                turnContentLowerCase();
-                nextChoice();
-                cout << "Choice: ";
-                cin >> choice;
-                break;
-            case 14:
-                turnFileContentFirstCaps();
-                nextChoice();
-                cout << "Choice: ";
-                cin >> choice;
-                break;
-            case 15:
                 saveFile();
+                nextChoice();
+                cout << "Choice: ";
+                cin >> choice;
+                break;
+            case 'd':
+                turnContentLowerCase();
+                saveFile();
+                nextChoice();
+                cout << "Choice: ";
+                cin >> choice;
+                break;
+            case 'e':
+                turnFileContentFirstCaps();
                 nextChoice();
                 cout << "Choice: ";
                 cin >> choice;
@@ -432,7 +438,7 @@ int menu(){
                 cin >> choice;
         }
     }
-    if (choice == 16){
+    if (choice == 'f'){
         cout << "Thank you so much for using our app" << endl;
         cout << "Goodbye!" << endl;
     }
@@ -455,7 +461,6 @@ int main() {
         menu();
     }
     else {
-        cout << "This file does already exist.\n";
         if (file.is_open()){
             menu();
         }
