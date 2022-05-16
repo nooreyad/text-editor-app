@@ -58,7 +58,6 @@ void checkFileExistence(){
 // Function to append text at the end of the file
 void addingContent() {
     fstream file;
-    ofstream savedFile("new file");
     string text;
     char ch, ch2;
     cin.ignore();
@@ -72,7 +71,6 @@ void addingContent() {
     file.open(fileName1, ios::app);
     file<<text<<endl;
     file.close();
-    savedFile.close();
 }
 
 // Function to display the content of the file
